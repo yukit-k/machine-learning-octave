@@ -62,23 +62,38 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+a1 = [ones(m,1) X];
+z2 = a1 * Theta1';
+a2 = [ones(m,1) sigmoid(z2)]; % 5000*26
+z3 = a2 * Theta2';
+a3 = sigmoid(z3);
 
+yl = eye(num_labels);
+y = yl(y,:);
 
+logisticF = (-y) .* log(a3) - (1-y) .* log(1-a3);
 
+% Before Regularization
+J = J + sum(sum(logisticF))/m;
 
+% After Regularization
+J = J + lambda / (2*m) * (sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2)));
 
+% Back Propagation
+Ddelta1 = 0;
+Ddelta2 = 0;
 
+delta3 = a3 - y; % 5000*10
+delta2 =  (delta3 * Theta2)(:,2:end) .* sigmoidGradient(z2); % 5000*25
+Ddelta2 = delta3' * a2; % 10*26
+Ddelta1 = delta2' * a1; % 25*401
 
+Theta1_grad = (1/m).*Ddelta1;
+Theta2_grad = (1/m).*Ddelta2;
 
-
-
-
-
-
-
-
-
-
+% After Regularization
+Theta1_grad(:,2:end) = Theta1_grad(:,2:end) + (lambda/m).*Theta1(:,2:end);
+Theta2_grad(:,2:end) = Theta2_grad(:,2:end) + (lambda/m).*Theta2(:,2:end);
 
 % -------------------------------------------------------------
 
