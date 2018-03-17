@@ -21,10 +21,13 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
-
-
-
-
+for i = 1:length(X)
+    for j = 1:K
+        dist(i,j) = sum((X(i,:)-centroids(j,:)).^2);
+    end
+    [r c] = min(dist(i,:)');
+    idx(i) = c;
+end
 
 
 % =============================================================
