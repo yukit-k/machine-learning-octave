@@ -12,7 +12,7 @@ function [mu sigma2] = estimateGaussian(X)
 
 % You should return these values correctly
 mu = zeros(n, 1);
-sigma2 = zeros(n, 1);
+sigma2 = zeros(n, 1);   
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: Compute the mean of the data and the variances
@@ -21,7 +21,8 @@ sigma2 = zeros(n, 1);
 %               should contain variance of the i-th feature.
 %
 
-
+mu = sum(X)/m;
+sigma2 = sum((X - ones(m, n).*mu).^2)/m;
 
 
 
